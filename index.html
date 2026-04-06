@@ -45,11 +45,12 @@
             display: none; position: absolute; top: 0; left: 0; width: 100vw; height: 100vh;
             flex-direction: column; justify-content: center; align-items: center; z-index: 5; animation: slightFlicker 0.1s infinite;
         }
+        /* Updated for Native Taiwanese */
         .tw-loading { font-family: sans-serif; font-size: 3.5rem; letter-spacing: 5px; font-weight: bold; color: #0f0; text-shadow: 0 0 15px #0f0; margin-bottom: 5px; }
         .en-loading { font-size: 2rem; letter-spacing: 8px; color: #0f0; opacity: 0.8; }
         @keyframes slightFlicker { 0%, 100% { opacity: 1; } 50% { opacity: 0.8; } }
 
-        /* --- HACKER ELEMENTS --- */
+        /* --- HACKER ELEMENTS & GLITCH --- */
         #matrix { position: absolute; top: 0; left: 0; z-index: 1; opacity: 0; transition: opacity 1.5s ease; }
         .scanlines {
             position: absolute; top: 0; left: 0; width: 100vw; height: 100vh;
@@ -58,8 +59,20 @@
         }
         .content { position: relative; z-index: 3; width: 90%; max-width: 800px; display: flex; flex-direction: column; align-items: center; }
         #console { font-size: 1.3rem; display: none; flex-direction: column; align-self: flex-start; width: 100%; }
+        
         .cursor::after { content: '█'; animation: blink 1s infinite; }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+        /* THE GLITCH ANIMATION */
+        .glitch-anim { animation: glitchEffect 0.2s linear infinite; font-weight: bold; }
+        @keyframes glitchEffect {
+            0% { transform: translate(0); color: #0f0; text-shadow: 2px 0 #ff003c, -2px 0 #00f0ff; }
+            20% { transform: translate(-3px, 1px); color: #fff; text-shadow: -2px 0 #ff003c, 2px 0 #00f0ff; }
+            40% { transform: translate(3px, -1px); color: #0f0; text-shadow: 2px 0 #ff003c, -2px 0 #00f0ff; }
+            60% { transform: translate(-2px, 2px); color: #fff; text-shadow: -2px 0 #ff003c, 2px 0 #00f0ff; }
+            80% { transform: translate(2px, -2px); color: #0f0; text-shadow: 2px 0 #ff003c, -2px 0 #00f0ff; }
+            100% { transform: translate(0); color: #0f0; text-shadow: 0 0 5px #0f0; }
+        }
 
         /* --- ULTRA CUTE ELEMENTS --- */
         #cute-container { display: none; flex-direction: column; align-items: center; opacity: 0; transition: opacity 2s ease; z-index: 4;}
@@ -72,7 +85,6 @@
         }
         .speech-bubble::after { content: ''; position: absolute; bottom: -10px; left: 50%; margin-left: -10px; border-width: 10px 10px 0; border-style: solid; border-color: #fff transparent transparent transparent; }
 
-        /* Interactive Cat with Swishing Tail */
         .svg-cat { width: 180px; height: 180px; animation: floatCat 4s ease-in-out infinite; cursor: pointer; -webkit-tap-highlight-color: transparent; }
         #cat-tail { transform-origin: 85px 70px; animation: tailSwish 3s ease-in-out infinite; }
         
@@ -88,19 +100,11 @@
         @keyframes floatBubble { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
         @keyframes tailSwish { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(-12deg); } }
 
-        /* Touch Sparkles & Ambient Magic */
-        .tap-sparkle {
-            position: absolute; pointer-events: none; font-size: 1.5rem; text-shadow: none; z-index: 100;
-            animation: popSparkle 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-        }
-        @keyframes popSparkle {
-            0% { transform: scale(0) rotate(0deg); opacity: 1; }
-            100% { transform: scale(1.5) rotate(90deg) translateY(-30px); opacity: 0; }
-        }
+        .tap-sparkle { position: absolute; pointer-events: none; font-size: 1.5rem; text-shadow: none; z-index: 100; animation: popSparkle 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        @keyframes popSparkle { 0% { transform: scale(0) rotate(0deg); opacity: 1; } 100% { transform: scale(1.5) rotate(90deg) translateY(-30px); opacity: 0; } }
 
         .orb { position: absolute; border-radius: 50%; background: #fff; filter: blur(4px); opacity: 0; animation: floatUpOrb 6s linear infinite; pointer-events: none; z-index: 1; }
         .heart { position: absolute; color: #ff4757; font-size: 1.5rem; text-shadow: none; opacity: 0; animation: floatUp 3s ease-in infinite; pointer-events: none; z-index: 2; }
-        
         @keyframes floatUpOrb { 0% { opacity: 0; transform: translateY(100px) scale(0.5); } 30% { opacity: 0.6; } 100% { opacity: 0; transform: translateY(-300px) scale(1.5); } }
         @keyframes floatUp { 0% { opacity: 0; transform: translateY(0) scale(0.5); } 20% { opacity: 1; transform: translateY(-20px) scale(1); } 100% { opacity: 0; transform: translateY(-100px) scale(1.2); } }
 
@@ -125,8 +129,8 @@
     </div>
 
     <div id="loading-screen">
-        <div class="tw-loading">載入中...</div>
-        <div class="en-loading">LOADING...</div>
+        <div class="tw-loading">稍等咧...</div>
+        <div class="en-loading">WAIT A SEC...</div>
     </div>
 
     <canvas id="matrix"></canvas>
@@ -167,7 +171,6 @@
     </div>
 
     <script>
-        // Matrix Setup
         const canvas = document.getElementById('matrix');
         const ctx = canvas.getContext('2d');
         let matrixInterval;
@@ -208,6 +211,15 @@
             osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.03);
         }
 
+        function playGlitchSound() {
+            if (!audioCtx) return;
+            const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
+            osc.type = 'sawtooth'; osc.frequency.setValueAtTime(100, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.1);
+            gain.gain.setValueAtTime(0.1, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+            osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.15);
+        }
+
         function playHappyChirp() {
             if (!audioCtx) return;
             const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
@@ -218,15 +230,48 @@
             osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.1);
         }
 
-        const hackerLogs = [ "BYPASSING LUN_OS FIREWALLS...", "DECRYPTING CORE MAINFRAME...", "WARNING: HIGH LEVEL OF GEEKINESS DETECTED.", "OVERRIDING SECURITY PROTOCOLS...", "INITIATING CUTENESS_OVERLOAD.EXE..." ];
+        // The Bilingual Log Database
+        const hackerLogs = [
+            { en: "BYPASSING LUN_OS FIREWALLS...", tw: "正在繞過 LUN_OS 防火牆..." },
+            { en: "DECRYPTING CORE MAINFRAME...", tw: "解密核心主機中..." },
+            { en: "WARNING: HIGH LEVEL OF GEEKINESS DETECTED.", tw: "警告：檢測到高度極客能量。" },
+            { en: "OVERRIDING SECURITY PROTOCOLS...", tw: "覆蓋安全協議..." },
+            { en: "INITIATING CUTENESS_OVERLOAD.EXE...", tw: "啟動 CUTENESS_OVERLOAD.EXE..." }
+        ];
 
-        async function typeText(element, text, speed) {
-            return new Promise(resolve => {
+        async function typeTextWithGlitch(element, logObj, speed) {
+            return new Promise(async resolve => {
                 let i = 0; element.classList.add('cursor');
+                // 1. Type English
                 const interval = setInterval(() => {
-                    element.textContent += text.charAt(i); playKeystroke(); i++;
-                    if (i === text.length) { clearInterval(interval); element.classList.remove('cursor'); resolve(); }
+                    element.textContent += logObj.en.charAt(i); playKeystroke(); i++;
+                    if (i === logObj.en.length) { 
+                        clearInterval(interval); 
+                        element.classList.remove('cursor');
+                    }
                 }, speed);
+
+                // Wait for English to finish typing + a tiny pause
+                await new Promise(r => setTimeout(r, (logObj.en.length * speed) + 200));
+
+                // 2. Trigger Glitch Sound and Visuals
+                playGlitchSound();
+                element.classList.add('glitch-anim');
+                
+                // 3. Swap text rapidly during glitch
+                let glitchChars = "!<>-_\\\\/[]{}—=+*^?#________";
+                let glitchInterval = setInterval(() => {
+                    element.textContent = Array(logObj.tw.length).fill(0).map(() => glitchChars[Math.floor(Math.random() * glitchChars.length)]).join('');
+                }, 30);
+
+                await new Promise(r => setTimeout(r, 200));
+
+                // 4. Settle on Traditional Chinese
+                clearInterval(glitchInterval);
+                element.classList.remove('glitch-anim');
+                element.textContent = "> " + logObj.tw;
+                
+                resolve();
             });
         }
 
@@ -244,19 +289,15 @@
             document.body.appendChild(orb); setTimeout(() => orb.remove(), 8000);
         }
 
-        // --- Sparkle on Touch ---
         document.addEventListener('pointerdown', (e) => {
             if(!document.body.classList.contains('kawaii-mode')) return;
             const emojis = ['✨', '⭐', '💖', '🌸'];
             for(let i=0; i<4; i++) {
-                const spark = document.createElement('div');
-                spark.className = 'tap-sparkle';
+                const spark = document.createElement('div'); spark.className = 'tap-sparkle';
                 spark.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-                // Randomize spread around the tap location
                 spark.style.left = (e.clientX - 15 + (Math.random()*30-15)) + 'px';
                 spark.style.top = (e.clientY - 15 + (Math.random()*30-15)) + 'px';
-                document.body.appendChild(spark);
-                setTimeout(() => spark.remove(), 800);
+                document.body.appendChild(spark); setTimeout(() => spark.remove(), 800);
             }
         });
 
@@ -276,9 +317,13 @@
                 document.getElementById('matrix').style.opacity = '0.4'; document.getElementById('scanlines').style.opacity = '1';
                 startMatrix(); consoleDiv.style.display = 'flex';
 
-                for (let log of hackerLogs) {
-                    const p = document.createElement('div'); consoleDiv.appendChild(p);
-                    await typeText(p, "> " + log, 40); await new Promise(r => setTimeout(r, 400)); 
+                // Loop through logs with the new glitch effect
+                for (let logObj of hackerLogs) {
+                    const p = document.createElement('div'); 
+                    p.textContent = "> ";
+                    consoleDiv.appendChild(p);
+                    await typeTextWithGlitch(p, logObj, 30); 
+                    await new Promise(r => setTimeout(r, 300)); 
                 }
 
                 await new Promise(r => setTimeout(r, 600)); clearInterval(matrixInterval);
@@ -290,7 +335,6 @@
             }, 1000);
         });
 
-        // --- Cat Interaction & Dynamic Text ---
         const cat = document.getElementById('the-cat');
         const bubbleText = document.getElementById('bubble-text');
         
@@ -304,21 +348,17 @@
         let msgIndex = 0;
 
         cat.addEventListener('click', (e) => {
-            e.stopPropagation(); // Prevents the screen tap from also firing on the cat
+            e.stopPropagation(); 
             if(!cat.classList.contains('petted')) {
                 playHappyChirp();
                 cat.classList.add('petted');
-                
-                // Cycle the text
                 msgIndex = (msgIndex + 1) % catMessages.length;
                 bubbleText.innerHTML = catMessages[msgIndex];
-
                 for(let i=0; i<3; i++) setTimeout(spawnMagic, i*200);
                 setTimeout(() => cat.classList.remove('petted'), 1500);
             }
         });
 
-        // --- Exit Sequence ---
         document.getElementById('exit-btn').addEventListener('click', async (e) => {
             e.stopPropagation();
             playKeystroke();
@@ -328,7 +368,13 @@
             goodbyeScreen.style.display = 'flex'; void goodbyeScreen.offsetWidth; goodbyeScreen.style.opacity = '1';
             await new Promise(r => setTimeout(r, 2000));
             goodbyeText.style.display = 'block';
-            await typeText(goodbyeText, "> You are amazing, Lun! ❤", 50);
+            
+            // Simple type writer for the final message
+            let i = 0; let finalMsg = "> You are amazing, Lun! ❤";
+            const interval = setInterval(() => {
+                goodbyeText.textContent += finalMsg.charAt(i); playKeystroke(); i++;
+                if (i === finalMsg.length) clearInterval(interval);
+            }, 50);
         });
     </script>
 </body>
