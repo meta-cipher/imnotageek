@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SECURE DATA FILE</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=VT323&family=Nunito:wght@700&display=swap');
+
+        body {
+            background-color: #000;
+            color: #0f0;
+            font-family: 'VT323', monospace;
+            margin: 0;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-shadow: 0 0 5px #0f0;
+            overscroll-behavior-y: none;
+            transition: background-color 2s ease;
+        }
+
+        /* --- LOCK SCREEN --- */
+        #lock-screen {
+            position: absolute;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-color: #050505;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 1.5s ease;
+        }
+
+        .lock-icon {
+            font-size: 4rem;
+            color: #ff4757;
+            text-shadow: 0 0 15px #ff4757;
+            margin-bottom: 10px;
+            animation: lockPulse 2s infinite;
+        }
+
+        @keyframes lockPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .warning-text {
+            color: #ff4757;
+            font-size: 2rem;
+            text-shadow: 0 0 10px #ff4757;
+            margin-bottom: 40px;
+            letter-spacing: 2px;
+        }
+
+        #unlock-btn {
+            background-color: transparent;
+            color: #ff4757;
+            border: 2px solid #ff4757;
+            padding: 15px 30px;
+            font-size: 1.5rem;
+            font-family: inherit;
+            cursor: pointer;
+            text-transform: uppercase;
+            box-shadow: 0 0 10px #ff4757, inset 0 0 10px #ff4757;
+            transition: all 0.3s;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        #unlock-btn:active {
+            transform: scale(0.95);
+        }
+
+        .granted {
+            color: #0f0 !important;
+            border-color: #0f0 !important;
+            box-shadow: 0 0 15px #0f0, inset 0 0 15px #0f0 !important;
+            text-shadow: 0 0 5px #0f0 !important;
+        }
+
+        /* --- LOADING SCREEN --- */
+        #loading-screen {
+            display: none;
+            position: absolute;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 5;
+            animation: slightFlicker 0.1s infinite;
+        }
+
+        .tw-loading {
+            font-family: sans-serif; /* System default looks best for CJK */
+            font-size: 3.5rem;
+            letter-spacing: 5px;
+            font-weight: bold;
+            color: #0f0;
+            text-shadow: 0 0 15px #0f0;
+            margin-bottom: 5px;
+        }
+
+        .en-loading {
+            font-size: 2rem;
+            letter-spacing: 8px;
+            color: #0f0;
+            opacity: 0.8;
+        }
+
+        @keyframes slightFlicker {
+            0% { opacity: 1; }
+            50% { opacity: 0.8; }
+            100% { opacity: 1; }
+        }
+
+        /* --- HACKER ELEMENTS --- */
+        #matrix { position: absolute; top: 0; left: 0; z-index: 1; opacity: 0; transition: opacity 1.5s ease; }
+        .scanlines {
+            position: absolute; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 2px, 3px 100%;
+            z-index: 2; pointer-events: none; opacity: 0; transition: opacity 1.5s ease;
+        }
+
+        .content {
+            position: relative; z-index: 3; width: 90%; max-width: 800px;
+            display: flex; flex-direction: column; align-items: center;
+        }
+
+        #console { font-size: 1.3rem; display: none; flex-direction: column; align-self: flex-start; width: 100%; }
+        .cursor::after { content: '█'; animation: blink 1s infinite; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+        /* --- CUTE ELEMENTS --- */
+        #cute-container {
+            display: none; flex-direction: column; align-items: center;
+            opacity: 0; transition: opacity 2s ease;
+        }
+
+        .speech-bubble {
+            background: #fff; color: #ff6b81; font-family: 'Nunito', sans-serif;
+            font-size: 1.2rem; font-weight: bold; padding: 15px 25px;
+            border-radius: 20px; position: relative; margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2); text-align: center;
+            animation: floatBubble 3s ease-in-out infinite; text-shadow: none;
+        }
+        .speech-bubble::after {
+            content: ''; position: absolute; bottom: -10px; left: 50%;
+            margin-left: -10px; border-width: 10px 10px 0;
+            border-style: solid; border-color: #fff transparent transparent transparent;
+        }
+
+        .svg-cat { width: 180px; height: 180px; animation: floatCat 4s ease-in-out infinite; }
+        .eye { animation: blinkEye 4s infinite; transform-origin: center; }
+        
+        @keyframes floatCat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        @keyframes floatBubble { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+        @keyframes blinkEye { 0%, 96%, 100% { transform: scaleY(1); } 98% { transform: scaleY(0.1); } }
+
+        #download-btn {
+            background-color: #ff6b81; color: #fff; border: none; border-radius: 25px;
+            padding: 12px 25px; font-size: 1.1rem; font-family: 'Nunito', sans-serif;
+            font-weight: bold; cursor: pointer; margin-top: 30px;
+            box-shadow: 0 4px 15px rgba(255, 107, 129, 0.5); text-shadow: none;
+            transition: transform 0.2s;
+        }
+        #download-btn:active { transform: scale(0.95); }
+
+        .heart {
+            position: absolute; color: #ff4757; font-size: 1.5rem; text-shadow: none;
+            opacity: 0; animation: floatUp 3s ease-in infinite; pointer-events: none;
+        }
+        @keyframes floatUp {
+            0% { opacity: 0; transform: translateY(0) scale(0.5); }
+            20% { opacity: 1; transform: translateY(-20px) scale(1); }
+            100% { opacity: 0; transform: translateY(-100px) scale(1.2); }
+        }
+
+        body.kawaii-mode { background-color: #ffeaa7; }
+    </style>
+</head>
+<body>
+
+    <div id="lock-screen">
+        <div class="lock-icon" id="lock-icon">🔒</div>
+        <div class="warning-text" id="warning-text">LUN_OS L10CKED</div>
+        <button id="unlock-btn">DECRYPT_SYSTEM</button>
+    </div>
+
+    <div id="loading-screen">
+        <div class="tw-loading">載入中...</div>
+        <div class="en-loading">LOADING...</div>
+    </div>
+
+    <canvas id="matrix"></canvas>
+    <div class="scanlines" id="scanlines"></div>
+
+    <div class="content">
+        <div id="console"></div>
+        
+        <div id="cute-container">
+            <div class="speech-bubble">You said you like geeks,<br>so I coded you a cat!</div>
+            
+            <svg class="svg-cat" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 70 70 Q 90 70 85 40" stroke="#576574" stroke-width="8" stroke-linecap="round" fill="transparent" />
+                <ellipse cx="50" cy="65" rx="35" ry="25" fill="#c8d6e5" />
+                <circle cx="50" cy="40" r="28" fill="#c8d6e5" />
+                <polygon points="25,30 20,5 45,20" fill="#c8d6e5" />
+                <polygon points="75,30 80,5 55,20" fill="#c8d6e5" />
+                <polygon points="27,27 24,10 40,20" fill="#ff9ff3" />
+                <polygon points="73,27 76,10 60,20" fill="#ff9ff3" />
+                <circle cx="38" cy="40" r="4" fill="#222" class="eye" />
+                <circle cx="62" cy="40" r="4" fill="#222" class="eye" />
+                <circle cx="30" cy="45" r="5" fill="#ff9ff3" opacity="0.6"/>
+                <circle cx="70" cy="45" r="5" fill="#ff9ff3" opacity="0.6"/>
+                <path d="M 46 45 Q 50 50 54 45" stroke="#222" stroke-width="2" fill="transparent" stroke-linecap="round"/>
+            </svg>
+
+            <button id="download-btn">Extract Secret_Payload.txt</button>
+        </div>
+    </div>
+
+    <script>
+        // --- Setup Matrix Canvas ---
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+        let matrixInterval;
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*';
+        let drops = [];
+
+        function startMatrix() {
+            drops = Array.from({ length: Math.floor(canvas.width / 16) }).fill(1);
+            matrixInterval = setInterval(() => {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#0F0';
+                ctx.font = '16px monospace';
+                for (let i = 0; i < drops.length; i++) {
+                    const text = chars.charAt(Math.floor(Math.random() * chars.length));
+                    ctx.fillText(text, i * 16, drops[i] * 16);
+                    if (drops[i] * 16 > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                    drops[i]++;
+                }
+            }, 33);
+        }
+
+        // --- Audio & Logic ---
+        const lockScreen = document.getElementById('lock-screen');
+        const loadingScreen = document.getElementById('loading-screen');
+        const unlockBtn = document.getElementById('unlock-btn');
+        const lockIcon = document.getElementById('lock-icon');
+        const warningText = document.getElementById('warning-text');
+        const consoleDiv = document.getElementById('console');
+        const cuteContainer = document.getElementById('cute-container');
+        let audioCtx;
+
+        function playKeystroke() {
+            if (!audioCtx) return;
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            osc.type = 'square';
+            osc.frequency.setValueAtTime(400 + Math.random() * 100, audioCtx.currentTime); 
+            osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.03);
+            gainNode.gain.setValueAtTime(0.05, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.03);
+            osc.connect(gainNode); gainNode.connect(audioCtx.destination);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.03);
+        }
+
+        const hackerLogs = [
+            "BYPASSING LUN_OS FIREWALLS...",
+            "DECRYPTING CORE MAINFRAME...",
+            "WARNING: HIGH LEVEL OF GEEKINESS DETECTED.",
+            "OVERRIDING SECURITY PROTOCOLS...",
+            "INITIATING CUTENESS_OVERLOAD.EXE..."
+        ];
+
+        async function typeText(element, text, speed) {
+            return new Promise(resolve => {
+                let i = 0; element.classList.add('cursor');
+                const interval = setInterval(() => {
+                    element.textContent += text.charAt(i);
+                    playKeystroke(); i++;
+                    if (i === text.length) { clearInterval(interval); element.classList.remove('cursor'); resolve(); }
+                }, speed);
+            });
+        }
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.innerHTML = '❤';
+            heart.className = 'heart';
+            heart.style.left = (40 + Math.random() * 20) + '%';
+            heart.style.animationDuration = (2 + Math.random() * 2) + 's';
+            cuteContainer.appendChild(heart);
+            setTimeout(() => heart.remove(), 4000);
+        }
+
+        // --- The Unlock Sequence ---
+        unlockBtn.addEventListener('click', async () => {
+            // 1. Initialize Audio Context for iPhone
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            audioCtx = new AudioContext();
+            if (audioCtx.state === 'suspended') await audioCtx.resume();
+
+            // Try Fullscreen
+            try { if(document.documentElement.requestFullscreen) document.documentElement.requestFullscreen(); } catch(e){}
+
+            // 2. Visually "Unlock" the screen
+            unlockBtn.classList.add('granted');
+            unlockBtn.textContent = "ACCESS GRANTED";
+            lockIcon.textContent = "🔓";
+            lockIcon.style.color = "#0f0";
+            lockIcon.style.textShadow = "0 0 15px #0f0";
+            warningText.style.color = "#0f0";
+            warningText.style.textShadow = "0 0 10px #0f0";
+            warningText.textContent = "SYSTEM DECRYPTED";
+
+            // 3. Fade out lock screen
+            await new Promise(r => setTimeout(r, 1000));
+            lockScreen.style.opacity = '0';
+            
+            setTimeout(async () => {
+                lockScreen.style.display = 'none';
+
+                // 4. SHOW THE CHINESE LOADING SCREEN
+                loadingScreen.style.display = 'flex';
+                playKeystroke(); // Add a little beep
+                await new Promise(r => setTimeout(r, 2200)); // Wait 2.2 seconds
+                loadingScreen.style.display = 'none';
+
+                // 5. Start Matrix
+                document.getElementById('matrix').style.opacity = '0.4';
+                document.getElementById('scanlines').style.opacity = '1';
+                startMatrix();
+                consoleDiv.style.display = 'flex';
+
+                // 6. Type the hacker logs
+                for (let log of hackerLogs) {
+                    const p = document.createElement('div');
+                    consoleDiv.appendChild(p);
+                    await typeText(p, "> " + log, 40);
+                    await new Promise(r => setTimeout(r, 400)); 
+                }
+
+                // 7. THE KAWAII TRANSITION
+                await new Promise(r => setTimeout(r, 600)); 
+                clearInterval(matrixInterval);
+                document.getElementById('matrix').style.opacity = '0';
+                document.getElementById('scanlines').style.opacity = '0';
+                consoleDiv.style.display = 'none';
+                
+                document.body.classList.add('kawaii-mode'); 
+                cuteContainer.style.display = 'flex';
+                
+                setTimeout(() => {
+                    cuteContainer.style.opacity = '1';
+                    setInterval(createHeart, 800); 
+                }, 500);
+            }, 1000);
+        });
+
+        // --- Payload Download ---
+        document.getElementById('download-btn').addEventListener('click', (e) => {
+            const btn = e.target;
+            const msg = "Miau! \n\nYou said you liked geek guys, so I hope this passed the test.\n\n- [Your Name]";
+            const blob = new Blob([msg], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url; a.download = 'SECRET_MESSAGE.txt';
+            document.body.appendChild(a); a.click(); document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            btn.textContent = "PAYLOAD EXTRACTED \u2714";
+            btn.style.backgroundColor = "#2ed573";
+            btn.style.boxShadow = "none";
+        });
+    </script>
+</body>
+</html>
