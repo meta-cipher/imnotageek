@@ -24,159 +24,92 @@
 
         /* --- LOCK SCREEN --- */
         #lock-screen {
-            position: absolute;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background-color: #050505;
-            z-index: 10;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            transition: opacity 1.5s ease;
+            position: absolute; top: 0; left: 0; width: 100vw; height: 100vh;
+            background-color: #050505; z-index: 10; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; transition: opacity 1.5s ease;
         }
-
-        .lock-icon {
-            font-size: 4rem;
-            color: #ff4757;
-            text-shadow: 0 0 15px #ff4757;
-            margin-bottom: 10px;
-            animation: lockPulse 2s infinite;
-        }
-
-        @keyframes lockPulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-
-        .warning-text {
-            color: #ff4757;
-            font-size: 2rem;
-            text-shadow: 0 0 10px #ff4757;
-            margin-bottom: 40px;
-            letter-spacing: 2px;
-        }
-
+        .lock-icon { font-size: 4rem; color: #ff4757; text-shadow: 0 0 15px #ff4757; margin-bottom: 10px; animation: lockPulse 2s infinite; }
+        @keyframes lockPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .warning-text { color: #ff4757; font-size: 2rem; text-shadow: 0 0 10px #ff4757; margin-bottom: 40px; letter-spacing: 2px; }
+        
         #unlock-btn {
-            background-color: transparent;
-            color: #ff4757;
-            border: 2px solid #ff4757;
-            padding: 15px 30px;
-            font-size: 1.5rem;
-            font-family: inherit;
-            cursor: pointer;
-            text-transform: uppercase;
-            box-shadow: 0 0 10px #ff4757, inset 0 0 10px #ff4757;
-            transition: all 0.3s;
-            -webkit-tap-highlight-color: transparent;
+            background-color: transparent; color: #ff4757; border: 2px solid #ff4757;
+            padding: 15px 30px; font-size: 1.5rem; font-family: inherit; cursor: pointer;
+            text-transform: uppercase; box-shadow: 0 0 10px #ff4757, inset 0 0 10px #ff4757;
+            transition: all 0.3s; -webkit-tap-highlight-color: transparent;
         }
-
-        #unlock-btn:active {
-            transform: scale(0.95);
-        }
-
-        .granted {
-            color: #0f0 !important;
-            border-color: #0f0 !important;
-            box-shadow: 0 0 15px #0f0, inset 0 0 15px #0f0 !important;
-            text-shadow: 0 0 5px #0f0 !important;
-        }
+        #unlock-btn:active { transform: scale(0.95); }
+        .granted { color: #0f0 !important; border-color: #0f0 !important; box-shadow: 0 0 15px #0f0, inset 0 0 15px #0f0 !important; text-shadow: 0 0 5px #0f0 !important; }
 
         /* --- LOADING SCREEN --- */
         #loading-screen {
-            display: none;
-            position: absolute;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 5;
-            animation: slightFlicker 0.1s infinite;
+            display: none; position: absolute; top: 0; left: 0; width: 100vw; height: 100vh;
+            flex-direction: column; justify-content: center; align-items: center; z-index: 5; animation: slightFlicker 0.1s infinite;
         }
-
-        .tw-loading {
-            font-family: sans-serif; /* System default looks best for CJK */
-            font-size: 3.5rem;
-            letter-spacing: 5px;
-            font-weight: bold;
-            color: #0f0;
-            text-shadow: 0 0 15px #0f0;
-            margin-bottom: 5px;
-        }
-
-        .en-loading {
-            font-size: 2rem;
-            letter-spacing: 8px;
-            color: #0f0;
-            opacity: 0.8;
-        }
-
-        @keyframes slightFlicker {
-            0% { opacity: 1; }
-            50% { opacity: 0.8; }
-            100% { opacity: 1; }
-        }
+        .tw-loading { font-family: sans-serif; font-size: 3.5rem; letter-spacing: 5px; font-weight: bold; color: #0f0; text-shadow: 0 0 15px #0f0; margin-bottom: 5px; }
+        .en-loading { font-size: 2rem; letter-spacing: 8px; color: #0f0; opacity: 0.8; }
+        @keyframes slightFlicker { 0%, 100% { opacity: 1; } 50% { opacity: 0.8; } }
 
         /* --- HACKER ELEMENTS --- */
         #matrix { position: absolute; top: 0; left: 0; z-index: 1; opacity: 0; transition: opacity 1.5s ease; }
         .scanlines {
             position: absolute; top: 0; left: 0; width: 100vw; height: 100vh;
             background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            background-size: 100% 2px, 3px 100%;
-            z-index: 2; pointer-events: none; opacity: 0; transition: opacity 1.5s ease;
+            background-size: 100% 2px, 3px 100%; z-index: 2; pointer-events: none; opacity: 0; transition: opacity 1.5s ease;
         }
-
-        .content {
-            position: relative; z-index: 3; width: 90%; max-width: 800px;
-            display: flex; flex-direction: column; align-items: center;
-        }
-
+        .content { position: relative; z-index: 3; width: 90%; max-width: 800px; display: flex; flex-direction: column; align-items: center; }
         #console { font-size: 1.3rem; display: none; flex-direction: column; align-self: flex-start; width: 100%; }
         .cursor::after { content: '█'; animation: blink 1s infinite; }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
         /* --- CUTE ELEMENTS --- */
-        #cute-container {
-            display: none; flex-direction: column; align-items: center;
-            opacity: 0; transition: opacity 2s ease;
-        }
-
+        #cute-container { display: none; flex-direction: column; align-items: center; opacity: 0; transition: opacity 2s ease; z-index: 4;}
+        
         .speech-bubble {
             background: #fff; color: #ff6b81; font-family: 'Nunito', sans-serif;
-            font-size: 1.2rem; font-weight: bold; padding: 15px 25px;
-            border-radius: 20px; position: relative; margin-bottom: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2); text-align: center;
-            animation: floatBubble 3s ease-in-out infinite; text-shadow: none;
+            font-size: 1.2rem; font-weight: bold; padding: 15px 25px; border-radius: 20px; position: relative; margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1); text-align: center; animation: floatBubble 3s ease-in-out infinite; text-shadow: none;
         }
-        .speech-bubble::after {
-            content: ''; position: absolute; bottom: -10px; left: 50%;
-            margin-left: -10px; border-width: 10px 10px 0;
-            border-style: solid; border-color: #fff transparent transparent transparent;
-        }
+        .speech-bubble::after { content: ''; position: absolute; bottom: -10px; left: 50%; margin-left: -10px; border-width: 10px 10px 0; border-style: solid; border-color: #fff transparent transparent transparent; }
 
-        .svg-cat { width: 180px; height: 180px; animation: floatCat 4s ease-in-out infinite; }
-        .eye { animation: blinkEye 4s infinite; transform-origin: center; }
+        /* Interactive Cat */
+        .svg-cat { width: 180px; height: 180px; animation: floatCat 4s ease-in-out infinite; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+        .eye { transform-origin: center; transition: opacity 0.2s; }
+        .eye-happy { display: none; } /* Hidden until tapped */
+        .cheek { transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         
+        /* Interactive Classes */
+        .svg-cat.petted .eye { display: none; }
+        .svg-cat.petted .eye-happy { display: block; }
+        .svg-cat.petted .cheek { transform: scale(1.5); opacity: 0.9; }
+
         @keyframes floatCat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
         @keyframes floatBubble { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
-        @keyframes blinkEye { 0%, 96%, 100% { transform: scaleY(1); } 98% { transform: scaleY(0.1); } }
 
-        #download-btn {
-            background-color: #ff6b81; color: #fff; border: none; border-radius: 25px;
-            padding: 12px 25px; font-size: 1.1rem; font-family: 'Nunito', sans-serif;
-            font-weight: bold; cursor: pointer; margin-top: 30px;
-            box-shadow: 0 4px 15px rgba(255, 107, 129, 0.5); text-shadow: none;
-            transition: transform 0.2s;
+        /* Glowing Orbs & Hearts */
+        .orb {
+            position: absolute; border-radius: 50%; background: #fff; filter: blur(4px);
+            opacity: 0; animation: floatUpOrb 6s linear infinite; pointer-events: none; z-index: 1;
         }
-        #download-btn:active { transform: scale(0.95); }
-
         .heart {
             position: absolute; color: #ff4757; font-size: 1.5rem; text-shadow: none;
-            opacity: 0; animation: floatUp 3s ease-in infinite; pointer-events: none;
+            opacity: 0; animation: floatUp 3s ease-in infinite; pointer-events: none; z-index: 2;
         }
-        @keyframes floatUp {
-            0% { opacity: 0; transform: translateY(0) scale(0.5); }
-            20% { opacity: 1; transform: translateY(-20px) scale(1); }
-            100% { opacity: 0; transform: translateY(-100px) scale(1.2); }
+        @keyframes floatUpOrb { 0% { opacity: 0; transform: translateY(100px) scale(0.5); } 30% { opacity: 0.6; } 100% { opacity: 0; transform: translateY(-300px) scale(1.5); } }
+        @keyframes floatUp { 0% { opacity: 0; transform: translateY(0) scale(0.5); } 20% { opacity: 1; transform: translateY(-20px) scale(1); } 100% { opacity: 0; transform: translateY(-100px) scale(1.2); } }
+
+        /* Exit Button */
+        #exit-btn {
+            background-color: transparent; color: #ff6b81; border: 2px solid #ff6b81; border-radius: 25px;
+            padding: 12px 30px; font-size: 1.1rem; font-family: 'Nunito', sans-serif; font-weight: bold; cursor: pointer; margin-top: 30px;
+            box-shadow: 0 4px 15px rgba(255, 107, 129, 0.2); text-shadow: none; transition: all 0.3s;
+        }
+        #exit-btn:hover, #exit-btn:active { background-color: #ff6b81; color: #fff; transform: scale(0.95); }
+
+        /* The Final Goodbye Screen */
+        #goodbye-screen {
+            display: none; position: absolute; top: 0; left: 0; width: 100vw; height: 100vh;
+            background-color: #000; z-index: 20; flex-direction: column; justify-content: center; align-items: center; opacity: 0; transition: opacity 2s ease;
         }
 
         body.kawaii-mode { background-color: #ffeaa7; }
@@ -202,9 +135,9 @@
         <div id="console"></div>
         
         <div id="cute-container">
-            <div class="speech-bubble">You said you like geeks,<br>so I coded you a cat!</div>
+            <div class="speech-bubble">You said you like geeks,<br>so I coded you a cat! <br><span style="font-size: 0.8rem; opacity: 0.7;">(tap to pet)</span></div>
             
-            <svg class="svg-cat" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <svg class="svg-cat" id="the-cat" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                 <path d="M 70 70 Q 90 70 85 40" stroke="#576574" stroke-width="8" stroke-linecap="round" fill="transparent" />
                 <ellipse cx="50" cy="65" rx="35" ry="25" fill="#c8d6e5" />
                 <circle cx="50" cy="40" r="28" fill="#c8d6e5" />
@@ -212,29 +145,30 @@
                 <polygon points="75,30 80,5 55,20" fill="#c8d6e5" />
                 <polygon points="27,27 24,10 40,20" fill="#ff9ff3" />
                 <polygon points="73,27 76,10 60,20" fill="#ff9ff3" />
-                <circle cx="38" cy="40" r="4" fill="#222" class="eye" />
-                <circle cx="62" cy="40" r="4" fill="#222" class="eye" />
-                <circle cx="30" cy="45" r="5" fill="#ff9ff3" opacity="0.6"/>
-                <circle cx="70" cy="45" r="5" fill="#ff9ff3" opacity="0.6"/>
-                <path d="M 46 45 Q 50 50 54 45" stroke="#222" stroke-width="2" fill="transparent" stroke-linecap="round"/>
+                <circle cx="36" cy="40" r="4" fill="#222" class="eye" />
+                <circle cx="64" cy="40" r="4" fill="#222" class="eye" />
+                <path d="M 32 41 Q 36 36 40 41" stroke="#222" stroke-width="3" fill="transparent" stroke-linecap="round" class="eye-happy"/>
+                <path d="M 60 41 Q 64 36 68 41" stroke="#222" stroke-width="3" fill="transparent" stroke-linecap="round" class="eye-happy"/>
+                <circle cx="30" cy="46" r="5" fill="#ff9ff3" opacity="0.5" class="cheek" style="transform-origin: 30px 46px;"/>
+                <circle cx="70" cy="46" r="5" fill="#ff9ff3" opacity="0.5" class="cheek" style="transform-origin: 70px 46px;"/>
+                <path d="M 46 45 Q 50 49 54 45" stroke="#222" stroke-width="2" fill="transparent" stroke-linecap="round"/>
             </svg>
 
-            <button id="download-btn">Extract Secret_Payload.txt</button>
+            <button id="exit-btn">DISCONNECT_ ❤</button>
         </div>
     </div>
 
+    <div id="goodbye-screen">
+        <div id="goodbye-text" style="display:none; font-size: 1.5rem; text-align: center; color: #ff6b81; text-shadow: 0 0 10px #ff6b81;"></div>
+    </div>
+
     <script>
-        // --- Setup Matrix Canvas ---
         const canvas = document.getElementById('matrix');
         const ctx = canvas.getContext('2d');
         let matrixInterval;
 
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resizeCanvas); resizeCanvas();
 
         const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*';
         let drops = [];
@@ -244,8 +178,7 @@
             matrixInterval = setInterval(() => {
                 ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = '#0F0';
-                ctx.font = '16px monospace';
+                ctx.fillStyle = '#0F0'; ctx.font = '16px monospace';
                 for (let i = 0; i < drops.length; i++) {
                     const text = chars.charAt(Math.floor(Math.random() * chars.length));
                     ctx.fillText(text, i * 16, drops[i] * 16);
@@ -255,27 +188,40 @@
             }, 33);
         }
 
-        // --- Audio & Logic ---
         const lockScreen = document.getElementById('lock-screen');
         const loadingScreen = document.getElementById('loading-screen');
         const unlockBtn = document.getElementById('unlock-btn');
-        const lockIcon = document.getElementById('lock-icon');
-        const warningText = document.getElementById('warning-text');
         const consoleDiv = document.getElementById('console');
         const cuteContainer = document.getElementById('cute-container');
         let audioCtx;
 
+        // Terminal Sound
         function playKeystroke() {
             if (!audioCtx) return;
             const osc = audioCtx.createOscillator();
-            const gainNode = audioCtx.createGain();
+            const gain = audioCtx.createGain();
             osc.type = 'square';
             osc.frequency.setValueAtTime(400 + Math.random() * 100, audioCtx.currentTime); 
             osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.03);
-            gainNode.gain.setValueAtTime(0.05, audioCtx.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.03);
-            osc.connect(gainNode); gainNode.connect(audioCtx.destination);
+            gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.03);
+            osc.connect(gain); gain.connect(audioCtx.destination);
             osc.start(); osc.stop(audioCtx.currentTime + 0.03);
+        }
+
+        // Happy Cat Sound
+        function playHappyChirp() {
+            if (!audioCtx) return;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(800, audioCtx.currentTime); 
+            osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.1);
+            gain.gain.setValueAtTime(0, audioCtx.currentTime);
+            gain.gain.linearRampToValueAtTime(0.1, audioCtx.currentTime + 0.05);
+            gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.1);
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.1);
         }
 
         const hackerLogs = [
@@ -297,56 +243,56 @@
             });
         }
 
-        function createHeart() {
-            const heart = document.createElement('div');
-            heart.innerHTML = '❤';
-            heart.className = 'heart';
-            heart.style.left = (40 + Math.random() * 20) + '%';
-            heart.style.animationDuration = (2 + Math.random() * 2) + 's';
-            cuteContainer.appendChild(heart);
-            setTimeout(() => heart.remove(), 4000);
+        function spawnMagic() {
+            // Hearts
+            if(Math.random() > 0.5) {
+                const heart = document.createElement('div');
+                heart.innerHTML = '❤'; heart.className = 'heart';
+                heart.style.left = (30 + Math.random() * 40) + '%';
+                heart.style.animationDuration = (2 + Math.random() * 2) + 's';
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), 4000);
+            }
+            // Orbs
+            const orb = document.createElement('div');
+            orb.className = 'orb';
+            const size = Math.random() * 15 + 5;
+            orb.style.width = size + 'px'; orb.style.height = size + 'px';
+            orb.style.left = (10 + Math.random() * 80) + '%';
+            orb.style.animationDuration = (4 + Math.random() * 4) + 's';
+            // Random soft colors
+            const colors = ['#fff', '#ffeaa7', '#ff9ff3', '#81ecec'];
+            orb.style.background = colors[Math.floor(Math.random() * colors.length)];
+            document.body.appendChild(orb);
+            setTimeout(() => orb.remove(), 8000);
         }
 
-        // --- The Unlock Sequence ---
+        // --- Unlock Sequence ---
         unlockBtn.addEventListener('click', async () => {
-            // 1. Initialize Audio Context for iPhone
             const AudioContext = window.AudioContext || window.webkitAudioContext;
             audioCtx = new AudioContext();
             if (audioCtx.state === 'suspended') await audioCtx.resume();
-
-            // Try Fullscreen
             try { if(document.documentElement.requestFullscreen) document.documentElement.requestFullscreen(); } catch(e){}
 
-            // 2. Visually "Unlock" the screen
             unlockBtn.classList.add('granted');
             unlockBtn.textContent = "ACCESS GRANTED";
-            lockIcon.textContent = "🔓";
-            lockIcon.style.color = "#0f0";
-            lockIcon.style.textShadow = "0 0 15px #0f0";
-            warningText.style.color = "#0f0";
-            warningText.style.textShadow = "0 0 10px #0f0";
-            warningText.textContent = "SYSTEM DECRYPTED";
-
-            // 3. Fade out lock screen
+            document.getElementById('lock-icon').textContent = "🔓";
+            
             await new Promise(r => setTimeout(r, 1000));
             lockScreen.style.opacity = '0';
             
             setTimeout(async () => {
                 lockScreen.style.display = 'none';
-
-                // 4. SHOW THE CHINESE LOADING SCREEN
                 loadingScreen.style.display = 'flex';
-                playKeystroke(); // Add a little beep
-                await new Promise(r => setTimeout(r, 2200)); // Wait 2.2 seconds
+                playKeystroke(); 
+                await new Promise(r => setTimeout(r, 2200)); 
                 loadingScreen.style.display = 'none';
 
-                // 5. Start Matrix
                 document.getElementById('matrix').style.opacity = '0.4';
                 document.getElementById('scanlines').style.opacity = '1';
                 startMatrix();
                 consoleDiv.style.display = 'flex';
 
-                // 6. Type the hacker logs
                 for (let log of hackerLogs) {
                     const p = document.createElement('div');
                     consoleDiv.appendChild(p);
@@ -354,7 +300,6 @@
                     await new Promise(r => setTimeout(r, 400)); 
                 }
 
-                // 7. THE KAWAII TRANSITION
                 await new Promise(r => setTimeout(r, 600)); 
                 clearInterval(matrixInterval);
                 document.getElementById('matrix').style.opacity = '0';
@@ -366,25 +311,37 @@
                 
                 setTimeout(() => {
                     cuteContainer.style.opacity = '1';
-                    setInterval(createHeart, 800); 
+                    setInterval(spawnMagic, 600); 
                 }, 500);
             }, 1000);
         });
 
-        // --- Payload Download ---
-        document.getElementById('download-btn').addEventListener('click', (e) => {
-            const btn = e.target;
-            const msg = "Miau! \n\nYou said you liked geek guys, so I hope this passed the test.\n\n- [Your Name]";
-            const blob = new Blob([msg], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url; a.download = 'SECRET_MESSAGE.txt';
-            document.body.appendChild(a); a.click(); document.body.removeChild(a);
-            URL.revokeObjectURL(url);
+        // --- Cat Interaction ---
+        const cat = document.getElementById('the-cat');
+        cat.addEventListener('click', () => {
+            if(!cat.classList.contains('petted')) {
+                playHappyChirp();
+                cat.classList.add('petted');
+                // Spawn extra hearts when tapped
+                for(let i=0; i<3; i++) setTimeout(spawnMagic, i*200);
+                setTimeout(() => cat.classList.remove('petted'), 1500);
+            }
+        });
+
+        // --- Exit Sequence ---
+        document.getElementById('exit-btn').addEventListener('click', async () => {
+            playKeystroke();
+            const goodbyeScreen = document.getElementById('goodbye-screen');
+            const goodbyeText = document.getElementById('goodbye-text');
             
-            btn.textContent = "PAYLOAD EXTRACTED \u2714";
-            btn.style.backgroundColor = "#2ed573";
-            btn.style.boxShadow = "none";
+            goodbyeScreen.style.display = 'flex';
+            // Trigger reflow to ensure transition works
+            void goodbyeScreen.offsetWidth; 
+            goodbyeScreen.style.opacity = '1';
+
+            await new Promise(r => setTimeout(r, 2000));
+            goodbyeText.style.display = 'block';
+            await typeText(goodbyeText, "> You are amazing, Lun! ❤", 50);
         });
     </script>
 </body>
