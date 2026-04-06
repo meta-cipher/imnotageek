@@ -22,7 +22,7 @@
             transition: background-color 2s ease;
         }
 
-        /* --- LOCK SCREEN --- */
+        /* --- LOCK & LOADING SCREENS --- */
         #lock-screen {
             position: absolute; top: 0; left: 0; width: 100vw; height: 100vh;
             background-color: #050505; z-index: 10; display: flex; flex-direction: column;
@@ -41,7 +41,6 @@
         #unlock-btn:active { transform: scale(0.95); }
         .granted { color: #0f0 !important; border-color: #0f0 !important; box-shadow: 0 0 15px #0f0, inset 0 0 15px #0f0 !important; text-shadow: 0 0 5px #0f0 !important; }
 
-        /* --- LOADING SCREEN --- */
         #loading-screen {
             display: none; position: absolute; top: 0; left: 0; width: 100vw; height: 100vh;
             flex-direction: column; justify-content: center; align-items: center; z-index: 5; animation: slightFlicker 0.1s infinite;
@@ -62,43 +61,49 @@
         .cursor::after { content: '█'; animation: blink 1s infinite; }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
-        /* --- CUTE ELEMENTS --- */
+        /* --- ULTRA CUTE ELEMENTS --- */
         #cute-container { display: none; flex-direction: column; align-items: center; opacity: 0; transition: opacity 2s ease; z-index: 4;}
         
         .speech-bubble {
             background: #fff; color: #ff6b81; font-family: 'Nunito', sans-serif;
             font-size: 1.2rem; font-weight: bold; padding: 15px 25px; border-radius: 20px; position: relative; margin-bottom: 20px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1); text-align: center; animation: floatBubble 3s ease-in-out infinite; text-shadow: none;
+            min-height: 50px; display: flex; flex-direction: column; justify-content: center;
         }
         .speech-bubble::after { content: ''; position: absolute; bottom: -10px; left: 50%; margin-left: -10px; border-width: 10px 10px 0; border-style: solid; border-color: #fff transparent transparent transparent; }
 
-        /* Interactive Cat */
+        /* Interactive Cat with Swishing Tail */
         .svg-cat { width: 180px; height: 180px; animation: floatCat 4s ease-in-out infinite; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+        #cat-tail { transform-origin: 85px 70px; animation: tailSwish 3s ease-in-out infinite; }
+        
         .eye { transform-origin: center; transition: opacity 0.2s; }
-        .eye-happy { display: none; } /* Hidden until tapped */
+        .eye-happy { display: none; } 
         .cheek { transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         
-        /* Interactive Classes */
         .svg-cat.petted .eye { display: none; }
         .svg-cat.petted .eye-happy { display: block; }
         .svg-cat.petted .cheek { transform: scale(1.5); opacity: 0.9; }
 
         @keyframes floatCat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
         @keyframes floatBubble { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+        @keyframes tailSwish { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(-12deg); } }
 
-        /* Glowing Orbs & Hearts */
-        .orb {
-            position: absolute; border-radius: 50%; background: #fff; filter: blur(4px);
-            opacity: 0; animation: floatUpOrb 6s linear infinite; pointer-events: none; z-index: 1;
+        /* Touch Sparkles & Ambient Magic */
+        .tap-sparkle {
+            position: absolute; pointer-events: none; font-size: 1.5rem; text-shadow: none; z-index: 100;
+            animation: popSparkle 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
-        .heart {
-            position: absolute; color: #ff4757; font-size: 1.5rem; text-shadow: none;
-            opacity: 0; animation: floatUp 3s ease-in infinite; pointer-events: none; z-index: 2;
+        @keyframes popSparkle {
+            0% { transform: scale(0) rotate(0deg); opacity: 1; }
+            100% { transform: scale(1.5) rotate(90deg) translateY(-30px); opacity: 0; }
         }
+
+        .orb { position: absolute; border-radius: 50%; background: #fff; filter: blur(4px); opacity: 0; animation: floatUpOrb 6s linear infinite; pointer-events: none; z-index: 1; }
+        .heart { position: absolute; color: #ff4757; font-size: 1.5rem; text-shadow: none; opacity: 0; animation: floatUp 3s ease-in infinite; pointer-events: none; z-index: 2; }
+        
         @keyframes floatUpOrb { 0% { opacity: 0; transform: translateY(100px) scale(0.5); } 30% { opacity: 0.6; } 100% { opacity: 0; transform: translateY(-300px) scale(1.5); } }
         @keyframes floatUp { 0% { opacity: 0; transform: translateY(0) scale(0.5); } 20% { opacity: 1; transform: translateY(-20px) scale(1); } 100% { opacity: 0; transform: translateY(-100px) scale(1.2); } }
 
-        /* Exit Button */
         #exit-btn {
             background-color: transparent; color: #ff6b81; border: 2px solid #ff6b81; border-radius: 25px;
             padding: 12px 30px; font-size: 1.1rem; font-family: 'Nunito', sans-serif; font-weight: bold; cursor: pointer; margin-top: 30px;
@@ -106,11 +111,7 @@
         }
         #exit-btn:hover, #exit-btn:active { background-color: #ff6b81; color: #fff; transform: scale(0.95); }
 
-        /* The Final Goodbye Screen */
-        #goodbye-screen {
-            display: none; position: absolute; top: 0; left: 0; width: 100vw; height: 100vh;
-            background-color: #000; z-index: 20; flex-direction: column; justify-content: center; align-items: center; opacity: 0; transition: opacity 2s ease;
-        }
+        #goodbye-screen { display: none; position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #000; z-index: 20; flex-direction: column; justify-content: center; align-items: center; opacity: 0; transition: opacity 2s ease; }
 
         body.kawaii-mode { background-color: #ffeaa7; }
     </style>
@@ -135,10 +136,13 @@
         <div id="console"></div>
         
         <div id="cute-container">
-            <div class="speech-bubble">You said you like geeks,<br>so I coded you a cat! <br><span style="font-size: 0.8rem; opacity: 0.7;">(tap to pet)</span></div>
+            <div class="speech-bubble" id="bubble-container">
+                <span id="bubble-text">You said you like geeks,<br>so I coded you a cat!</span>
+                <span style="font-size: 0.8rem; opacity: 0.7; margin-top: 5px;">(tap to pet)</span>
+            </div>
             
             <svg class="svg-cat" id="the-cat" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                <path d="M 70 70 Q 90 70 85 40" stroke="#576574" stroke-width="8" stroke-linecap="round" fill="transparent" />
+                <path id="cat-tail" d="M 70 70 Q 90 70 85 40" stroke="#576574" stroke-width="8" stroke-linecap="round" fill="transparent" />
                 <ellipse cx="50" cy="65" rx="35" ry="25" fill="#c8d6e5" />
                 <circle cx="50" cy="40" r="28" fill="#c8d6e5" />
                 <polygon points="25,30 20,5 45,20" fill="#c8d6e5" />
@@ -163,16 +167,15 @@
     </div>
 
     <script>
+        // Matrix Setup
         const canvas = document.getElementById('matrix');
         const ctx = canvas.getContext('2d');
         let matrixInterval;
-
         function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
         window.addEventListener('resize', resizeCanvas); resizeCanvas();
 
         const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*';
         let drops = [];
-
         function startMatrix() {
             drops = Array.from({ length: Math.floor(canvas.width / 16) }).fill(1);
             matrixInterval = setInterval(() => {
@@ -195,150 +198,134 @@
         const cuteContainer = document.getElementById('cute-container');
         let audioCtx;
 
-        // Terminal Sound
+        // Audio Generators
         function playKeystroke() {
             if (!audioCtx) return;
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.type = 'square';
-            osc.frequency.setValueAtTime(400 + Math.random() * 100, audioCtx.currentTime); 
+            const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
+            osc.type = 'square'; osc.frequency.setValueAtTime(400 + Math.random() * 100, audioCtx.currentTime); 
             osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.03);
-            gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.03);
-            osc.connect(gain); gain.connect(audioCtx.destination);
-            osc.start(); osc.stop(audioCtx.currentTime + 0.03);
+            gain.gain.setValueAtTime(0.05, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.03);
+            osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.03);
         }
 
-        // Happy Cat Sound
         function playHappyChirp() {
             if (!audioCtx) return;
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(800, audioCtx.currentTime); 
+            const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
+            osc.type = 'sine'; osc.frequency.setValueAtTime(800, audioCtx.currentTime); 
             osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.1);
-            gain.gain.setValueAtTime(0, audioCtx.currentTime);
-            gain.gain.linearRampToValueAtTime(0.1, audioCtx.currentTime + 0.05);
+            gain.gain.setValueAtTime(0, audioCtx.currentTime); gain.gain.linearRampToValueAtTime(0.1, audioCtx.currentTime + 0.05);
             gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.1);
-            osc.connect(gain); gain.connect(audioCtx.destination);
-            osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+            osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.1);
         }
 
-        const hackerLogs = [
-            "BYPASSING LUN_OS FIREWALLS...",
-            "DECRYPTING CORE MAINFRAME...",
-            "WARNING: HIGH LEVEL OF GEEKINESS DETECTED.",
-            "OVERRIDING SECURITY PROTOCOLS...",
-            "INITIATING CUTENESS_OVERLOAD.EXE..."
-        ];
+        const hackerLogs = [ "BYPASSING LUN_OS FIREWALLS...", "DECRYPTING CORE MAINFRAME...", "WARNING: HIGH LEVEL OF GEEKINESS DETECTED.", "OVERRIDING SECURITY PROTOCOLS...", "INITIATING CUTENESS_OVERLOAD.EXE..." ];
 
         async function typeText(element, text, speed) {
             return new Promise(resolve => {
                 let i = 0; element.classList.add('cursor');
                 const interval = setInterval(() => {
-                    element.textContent += text.charAt(i);
-                    playKeystroke(); i++;
+                    element.textContent += text.charAt(i); playKeystroke(); i++;
                     if (i === text.length) { clearInterval(interval); element.classList.remove('cursor'); resolve(); }
                 }, speed);
             });
         }
 
         function spawnMagic() {
-            // Hearts
             if(Math.random() > 0.5) {
                 const heart = document.createElement('div');
                 heart.innerHTML = '❤'; heart.className = 'heart';
-                heart.style.left = (30 + Math.random() * 40) + '%';
-                heart.style.animationDuration = (2 + Math.random() * 2) + 's';
-                document.body.appendChild(heart);
-                setTimeout(() => heart.remove(), 4000);
+                heart.style.left = (30 + Math.random() * 40) + '%'; heart.style.animationDuration = (2 + Math.random() * 2) + 's';
+                document.body.appendChild(heart); setTimeout(() => heart.remove(), 4000);
             }
-            // Orbs
-            const orb = document.createElement('div');
-            orb.className = 'orb';
-            const size = Math.random() * 15 + 5;
-            orb.style.width = size + 'px'; orb.style.height = size + 'px';
-            orb.style.left = (10 + Math.random() * 80) + '%';
-            orb.style.animationDuration = (4 + Math.random() * 4) + 's';
-            // Random soft colors
-            const colors = ['#fff', '#ffeaa7', '#ff9ff3', '#81ecec'];
-            orb.style.background = colors[Math.floor(Math.random() * colors.length)];
-            document.body.appendChild(orb);
-            setTimeout(() => orb.remove(), 8000);
+            const orb = document.createElement('div'); orb.className = 'orb';
+            const size = Math.random() * 15 + 5; orb.style.width = size + 'px'; orb.style.height = size + 'px';
+            orb.style.left = (10 + Math.random() * 80) + '%'; orb.style.animationDuration = (4 + Math.random() * 4) + 's';
+            const colors = ['#fff', '#ffeaa7', '#ff9ff3', '#81ecec']; orb.style.background = colors[Math.floor(Math.random() * colors.length)];
+            document.body.appendChild(orb); setTimeout(() => orb.remove(), 8000);
         }
+
+        // --- Sparkle on Touch ---
+        document.addEventListener('pointerdown', (e) => {
+            if(!document.body.classList.contains('kawaii-mode')) return;
+            const emojis = ['✨', '⭐', '💖', '🌸'];
+            for(let i=0; i<4; i++) {
+                const spark = document.createElement('div');
+                spark.className = 'tap-sparkle';
+                spark.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                // Randomize spread around the tap location
+                spark.style.left = (e.clientX - 15 + (Math.random()*30-15)) + 'px';
+                spark.style.top = (e.clientY - 15 + (Math.random()*30-15)) + 'px';
+                document.body.appendChild(spark);
+                setTimeout(() => spark.remove(), 800);
+            }
+        });
 
         // --- Unlock Sequence ---
         unlockBtn.addEventListener('click', async () => {
             const AudioContext = window.AudioContext || window.webkitAudioContext;
-            audioCtx = new AudioContext();
-            if (audioCtx.state === 'suspended') await audioCtx.resume();
+            audioCtx = new AudioContext(); if (audioCtx.state === 'suspended') await audioCtx.resume();
             try { if(document.documentElement.requestFullscreen) document.documentElement.requestFullscreen(); } catch(e){}
 
-            unlockBtn.classList.add('granted');
-            unlockBtn.textContent = "ACCESS GRANTED";
-            document.getElementById('lock-icon').textContent = "🔓";
-            
-            await new Promise(r => setTimeout(r, 1000));
-            lockScreen.style.opacity = '0';
+            unlockBtn.classList.add('granted'); unlockBtn.textContent = "ACCESS GRANTED"; document.getElementById('lock-icon').textContent = "🔓";
+            await new Promise(r => setTimeout(r, 1000)); lockScreen.style.opacity = '0';
             
             setTimeout(async () => {
-                lockScreen.style.display = 'none';
-                loadingScreen.style.display = 'flex';
-                playKeystroke(); 
-                await new Promise(r => setTimeout(r, 2200)); 
-                loadingScreen.style.display = 'none';
+                lockScreen.style.display = 'none'; loadingScreen.style.display = 'flex'; playKeystroke(); 
+                await new Promise(r => setTimeout(r, 2200)); loadingScreen.style.display = 'none';
 
-                document.getElementById('matrix').style.opacity = '0.4';
-                document.getElementById('scanlines').style.opacity = '1';
-                startMatrix();
-                consoleDiv.style.display = 'flex';
+                document.getElementById('matrix').style.opacity = '0.4'; document.getElementById('scanlines').style.opacity = '1';
+                startMatrix(); consoleDiv.style.display = 'flex';
 
                 for (let log of hackerLogs) {
-                    const p = document.createElement('div');
-                    consoleDiv.appendChild(p);
-                    await typeText(p, "> " + log, 40);
-                    await new Promise(r => setTimeout(r, 400)); 
+                    const p = document.createElement('div'); consoleDiv.appendChild(p);
+                    await typeText(p, "> " + log, 40); await new Promise(r => setTimeout(r, 400)); 
                 }
 
-                await new Promise(r => setTimeout(r, 600)); 
-                clearInterval(matrixInterval);
-                document.getElementById('matrix').style.opacity = '0';
-                document.getElementById('scanlines').style.opacity = '0';
-                consoleDiv.style.display = 'none';
+                await new Promise(r => setTimeout(r, 600)); clearInterval(matrixInterval);
+                document.getElementById('matrix').style.opacity = '0'; document.getElementById('scanlines').style.opacity = '0'; consoleDiv.style.display = 'none';
                 
-                document.body.classList.add('kawaii-mode'); 
-                cuteContainer.style.display = 'flex';
+                document.body.classList.add('kawaii-mode'); cuteContainer.style.display = 'flex';
                 
-                setTimeout(() => {
-                    cuteContainer.style.opacity = '1';
-                    setInterval(spawnMagic, 600); 
-                }, 500);
+                setTimeout(() => { cuteContainer.style.opacity = '1'; setInterval(spawnMagic, 600); }, 500);
             }, 1000);
         });
 
-        // --- Cat Interaction ---
+        // --- Cat Interaction & Dynamic Text ---
         const cat = document.getElementById('the-cat');
-        cat.addEventListener('click', () => {
+        const bubbleText = document.getElementById('bubble-text');
+        
+        const catMessages = [
+            "You said you like geeks,<br>so I coded you a cat!",
+            "*purrrrrrrrr* 🐾",
+            "Geek guys are the best! 😉",
+            "You found my weak spot!",
+            "*happy kitty noises* ✨"
+        ];
+        let msgIndex = 0;
+
+        cat.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevents the screen tap from also firing on the cat
             if(!cat.classList.contains('petted')) {
                 playHappyChirp();
                 cat.classList.add('petted');
-                // Spawn extra hearts when tapped
+                
+                // Cycle the text
+                msgIndex = (msgIndex + 1) % catMessages.length;
+                bubbleText.innerHTML = catMessages[msgIndex];
+
                 for(let i=0; i<3; i++) setTimeout(spawnMagic, i*200);
                 setTimeout(() => cat.classList.remove('petted'), 1500);
             }
         });
 
         // --- Exit Sequence ---
-        document.getElementById('exit-btn').addEventListener('click', async () => {
+        document.getElementById('exit-btn').addEventListener('click', async (e) => {
+            e.stopPropagation();
             playKeystroke();
             const goodbyeScreen = document.getElementById('goodbye-screen');
             const goodbyeText = document.getElementById('goodbye-text');
             
-            goodbyeScreen.style.display = 'flex';
-            // Trigger reflow to ensure transition works
-            void goodbyeScreen.offsetWidth; 
-            goodbyeScreen.style.opacity = '1';
-
+            goodbyeScreen.style.display = 'flex'; void goodbyeScreen.offsetWidth; goodbyeScreen.style.opacity = '1';
             await new Promise(r => setTimeout(r, 2000));
             goodbyeText.style.display = 'block';
             await typeText(goodbyeText, "> You are amazing, Lun! ❤", 50);
